@@ -18,13 +18,15 @@ Connection con = null;
 Statement stmt = null;
 ResultSet rs = null;
 String Login;
+String Password;
 String Request;
 String Balance;
-public Bankomat(String UserName) throws SQLException, Exception {
+public Bankomat(String UserName,String Password) throws SQLException, Exception {
  
 initComponents();
 Balance = null;
 Login=UserName;
+this.Password=Password;
 Request="select * from password where login='"+Login+"'";
 Connection(Request);  
   
@@ -166,7 +168,7 @@ int money=Integer.parseInt(jTextField1.getText());
 int balance=Integer.parseInt(Balance);
 money=balance-money;
 String n="Update password set balance="+money
-        + " where login='"+Login+"'";
+        + " where login='"+Login+"'"+"and passwords='"+this.Password+"'";
 SQLRequest(n);
 displayBalance();    
         }
@@ -179,7 +181,7 @@ int money=Integer.parseInt(jTextField1.getText());
 int balance=Integer.parseInt(Balance);
 money=balance+money;
 String n="Update password set balance="+money
-        + " where login='"+Login+"'";
+        + " where login='"+Login+"'"+"and passwords='"+this.Password+"'";
 SQLRequest(n);
 displayBalance();   
         }
