@@ -176,7 +176,7 @@ displayBalance();
 
 //пополнение
 private void Deposit() throws SQLException, Exception {
-    if (isValidDeposoit()){
+if (isValidDeposoit()){
 int money=Integer.parseInt(jTextField1.getText());
 int balance=Integer.parseInt(Balance);
 money=balance+money;
