@@ -130,6 +130,7 @@ String log=jTextField1.getText();
 int a=0;
 int c=0; 
 String UserName=null;
+String Password=null;
 try{
 
 while (rs.next()){
@@ -139,7 +140,8 @@ while (rs.next()){
 if (log.equalsIgnoreCase(b[a])){ c=1; 
 if (new String(jPasswordField1.getPassword()).equals(v[a])) {this.setVisible(false);
 UserName=b[a];
-Bankomat m=new Bankomat(UserName);
+Password=v[a];
+Bankomat m=new Bankomat(UserName,Password);
 
 m.setVisible(true);
 break;}
