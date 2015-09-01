@@ -31,15 +31,53 @@ ResultSet rs = null;
 
     public Login() throws Exception {
  initComponents();
+
+
+    }
+    public void Connect() throws Exception{
  Class.forName("org.postgresql.Driver");
  String url ="jdbc:postgresql://localhost:5432/AddresBook";
  con = DriverManager.getConnection(url, "postgres", "1");
  stmt=con.createStatement();
  rs= stmt.executeQuery("Select * from password");
 
-
+        
     }
+    
+    public void Start()throws Exception{
+String v[]=new String [4]; 
+String b[]=new String [4];
+String log=jTextField1.getText();  
+int a=0;
+boolean c=true; 
+String UserName;
+Connect();
+try{
 
+while (rs.next()){
+ v[a]=rs.getString(2) ;
+ b[a]=rs.getString(1);
+if (log.equalsIgnoreCase(b[a])){ c=false;
+if (new String(jPasswordField1.getPassword()).equals(v[a])) {this.dispose();
+UserName=b[a];
+Bankomat m=new Bankomat(UserName);
+
+m.setVisible(true);
+break;}
+
+else 
+    jOptionPane1.showMessageDialog(rootPane,"Пароль не верен","Ошибка",jOptionPane1.WARNING_MESSAGE);
+
+}
+    }
+if(c==true)  jOptionPane1.showMessageDialog(rootPane,"Логин не верен","Ошибка",jOptionPane1.WARNING_MESSAGE);
+
+
+
+}catch (Exception e){
+    e.printStackTrace();
+} 
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -124,41 +162,11 @@ ResultSet rs = null;
 
  
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-String v[]=new String [4]; 
-String b[]=new String [4];
-String log=jTextField1.getText();  
-int a=0;
-int c=0; 
-String UserName=null;
-String Password=null;
-try{
-
-while (rs.next()){
- v[a]=rs.getString(2) ;
- b[a]=rs.getString(1);
-
-if (log.equalsIgnoreCase(b[a])){ c=1; 
-if (new String(jPasswordField1.getPassword()).equals(v[a])) {this.setVisible(false);
-UserName=b[a];
-Password=v[a];
-Bankomat m=new Bankomat(UserName,Password);
-
-m.setVisible(true);
-break;}
-
-else 
-    jOptionPane1.showMessageDialog(rootPane,"Пароль не верен","Ошибка",jOptionPane1.WARNING_MESSAGE);
-break;
-}
+    try {     
+        Start();
+    } catch (Exception ex) {
+        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
     }
-
-
-if (c==0){
-jOptionPane1.showMessageDialog(rootPane,"Логин не верен","Ошибка",jOptionPane1.WARNING_MESSAGE); }
-
-}catch (Exception e){
-    e.printStackTrace();
-}      
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

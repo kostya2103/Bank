@@ -18,15 +18,13 @@ Connection con = null;
 Statement stmt = null;
 ResultSet rs = null;
 String Login;
-String Password;
 String Request;
 String Balance;
-public Bankomat(String UserName,String Password) throws SQLException, Exception {
+public Bankomat(String UserName) throws SQLException, Exception {
  
 initComponents();
 Balance = null;
 Login=UserName;
-this.Password=Password;
 Request="select * from password where login='"+Login+"'";
 Connection(Request);  
   
@@ -60,6 +58,10 @@ stmt.executeUpdate(n);
     private void initComponents() {
 
         jOptionPane1 = new javax.swing.JOptionPane();
+        jFrame1 = new javax.swing.JFrame();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -67,6 +69,59 @@ stmt.executeUpdate(n);
         jButton1 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+
+        jFrame1.setMinimumSize(new java.awt.Dimension(344, 178));
+        jFrame1.setPreferredSize(new java.awt.Dimension(344, 178));
+
+        jTextField2.setText("Введите сумму");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
+        jTextField3.setText("Введите номер карты");
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Перевести");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame1Layout.createSequentialGroup()
+                .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jFrame1Layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField3)
+                            .addComponent(jTextField2)))
+                    .addGroup(jFrame1Layout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addComponent(jButton4)))
+                .addContainerGap(151, Short.MAX_VALUE))
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton4)
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,6 +158,13 @@ stmt.executeUpdate(n);
             }
         });
 
+        jButton3.setText("Перевести");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,7 +188,9 @@ stmt.executeUpdate(n);
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
-                        .addGap(158, 158, 158))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
+                        .addGap(65, 65, 65))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,7 +207,8 @@ stmt.executeUpdate(n);
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
@@ -168,7 +233,7 @@ int money=Integer.parseInt(jTextField1.getText());
 int balance=Integer.parseInt(Balance);
 money=balance-money;
 String n="Update password set balance="+money
-        + " where login='"+Login+"'"+"and passwords='"+this.Password+"'";
+        + " where login='"+Login+"'";
 SQLRequest(n);
 displayBalance();    
         }
@@ -176,16 +241,33 @@ displayBalance();
 
 //пополнение
 private void Deposit() throws SQLException, Exception {
-if (isValidDeposoit()){
+    if (isValidDeposoit()){
 int money=Integer.parseInt(jTextField1.getText());
 int balance=Integer.parseInt(Balance);
 money=balance+money;
 String n="Update password set balance="+money
-        + " where login='"+Login+"'"+"and passwords='"+this.Password+"'";
+        + " where login='"+Login+"'";
 SQLRequest(n);
 displayBalance();   
         }
 }
+//перевод
+private void Transport() throws SQLException, Exception {
+  //  if (isValiDraw()){
+int money=Integer.parseInt(jTextField2.getText());
+int balance=Integer.parseInt(Balance);
+balance=balance-money;
+String n="Update password set balance="+balance
+        + " where login='"+Login+"'";
+SQLRequest(n);
+n="Update password set balance=balance+"+"'"+money+"'"
+        +"where card_number="+"'"+Integer.parseInt(jTextField3.getText())+"'";
+SQLRequest(n);
+displayBalance();   
+
+        
+}
+
        
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         
@@ -199,6 +281,26 @@ displayBalance();
     }
          
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    jFrame1.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    try {
+        Transport();        // TODO add your handling code here:
+    } catch (Exception ex) {
+        Logger.getLogger(Bankomat.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
 //показать баланс
 public  void displayBalance() throws SQLException, Exception {
   Connection(Request);  
@@ -309,11 +411,16 @@ private boolean NumberChek(String num) {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
